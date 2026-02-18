@@ -22,6 +22,11 @@ app.use((req, res, next) => {
 // dist klasörünü statik olarak servis et
 app.use(express.static(path.join(__dirname, 'dist')));
 
+// Healthcheck endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 // Sunucuyu başlat
 app.listen(PORT, () => {
   console.log(`Expo OTA sunucusu ${PORT} portunda çalışıyor`);

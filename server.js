@@ -50,12 +50,16 @@ app.get('/manifest', async (req, res) => {
       id: `${Date.now()}-${platform}`,
       createdAt: new Date().toISOString(),
       runtimeVersion: runtimeVersion,
-      assets: fileMetadata.assets.map(asset => ({
-        hash: asset.path.split('/').pop().split('.')[0],
-        key: asset.path,
-        contentType: getContentType(asset.ext),
-        url: `${baseUrl}/${asset.path}`
-      })),
+      assets: fileMetadata.assets.map(asset => {
+        const fileName = asset.path.split('/').pop();
+        const hash = fileName.split('.')[0]; // Dosya adından hash al (örn: 983f76f089603a6a022d4a5b06b2f669)
+        return {
+          hash: hash,
+          key: asset.path,
+          contentType: getContentType(asset.ext),
+          url: `${baseUrl}/${asset.path}`
+        };
+      }),
       launchAsset: {
         hash: fileMetadata.bundle.split('/').pop().split('.')[0],
         key: fileMetadata.bundle,
